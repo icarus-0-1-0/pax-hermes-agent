@@ -21,6 +21,6 @@ COPY docker/msp-entrypoint.sh /app/msp-entrypoint.sh
 RUN chmod +x /app/msp-entrypoint.sh
 
 # Port the portal talks to.
-EXPOSE 8080
+EXPOSE 8081
 
 ENTRYPOINT ["/app/msp-entrypoint.sh"]
