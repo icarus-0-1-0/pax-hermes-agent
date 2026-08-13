@@ -1,0 +1,26 @@
+# MSP Agent container.
+# Minimal image: only Python stdlib is needed for the API server in v1.
+FROM python:3.12-slim
+
+# No external packages required yet (http.server + json are stdlib).
+# Keeping a placeholder so future phases can add deps without a base-image swap.
+RUN pip install --no-cache-dir --upgrade pip
+
+# Working layout: /app is the container home for the agent code.
+WORKDIR /app
+
+# Copy the standalone API server.
+COPY msp_api_server.py /app/msp_api_server.py
+
+# Copy skills/ and plugins/ for the future agent logic (Phase 3).
+COPY skills/ /app/skills/
+COPY plugins/ /app/plugins/
+
+# Copy the entrypoint and make it executable.
+COPY docker/msp-entrypoint.sh /app/msp-entrypoint.sh
+RUN chmod +x /app/msp-entrypoint.sh
+
+# Port the portal talks to.
+EXPOSE 8080
+
+ENTRYPOINT ["/app/msp-entrypoint.sh"]
